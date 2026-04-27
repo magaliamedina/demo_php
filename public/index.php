@@ -6,6 +6,7 @@ include_once __DIR__ . '/../config/db.php';
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mi Demo de Tareas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome CDN for icons -->
@@ -13,18 +14,22 @@ include_once __DIR__ . '/../config/db.php';
 </head>
 <body class="bg-light">
 
-<div class="container mt-5">
+<div class="container py-4 py-md-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-6">
             <div class="card shadow">
                 <div class="card-body">
-                    <h2 class="text-center mb-4">
+                    <h2 class="text-center mb-4 fs-3">
                         <i class="fa-solid fa-clipboard-check me-2"></i>Mis Tareas
                     </h2>
                     
-                    <form action="../src/Controllers/agregar.php" method="POST" class="d-flex mb-3">
-                        <input type="text" name="titulo_tarea" class="form-control me-2" placeholder="Escribe una tarea..." required>
-                        <button type="submit" class="btn btn-primary">Agregar</button>
+                    <form action="../src/Controllers/agregar.php" method="POST" class="row g-2 mb-3">
+                        <div class="col-12 col-sm">
+                            <input type="text" name="titulo_tarea" class="form-control" placeholder="Escribe una tarea..." required>
+                        </div>
+                        <div class="col-12 col-sm-auto d-grid">
+                            <button type="submit" class="btn btn-primary">Agregar</button>
+                        </div>
                     </form>
 
                     <ul class="list-group">
@@ -40,15 +45,15 @@ include_once __DIR__ . '/../config/db.php';
                             $iconCompletar = $completada ? "fa-solid fa-check-circle" : "fa-regular fa-circle";
                             $tooltipCompletar = $completada ? "Marcar como pendiente" : "Marcar como completada";
 
-                            echo "<li class='list-group-item d-flex justify-content-between align-items-center'>";
-                            echo "<div class='d-flex align-items-center'>";
+                            echo "<li class='list-group-item d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2'>";
+                            echo "<div class='d-flex align-items-center gap-2'>";
                             // Botón para cambiar estado completada
                             echo "<a href='../src/Controllers/completar.php?id=" . $fila['id'] . "' class='$btnCompletarClass' title='$tooltipCompletar'>";
                             echo "<i class='$iconCompletar'></i>";
                             echo "</a>";
-                            echo "<span class='$spanClass'>" . htmlspecialchars($fila['tarea']) . "</span>";
+                            echo "<span class='$spanClass text-break'>" . htmlspecialchars($fila['tarea']) . "</span>";
                             echo "</div>";
-                            echo "<a href='../src/Controllers/eliminar.php?id=" . $fila['id'] . "' class='btn btn-danger btn-sm' title='Eliminar'>";
+                            echo "<a href='../src/Controllers/eliminar.php?id=" . $fila['id'] . "' class='btn btn-danger btn-sm align-self-end align-self-sm-auto' title='Eliminar'>";
                             echo "<i class='fa-solid fa-trash'></i>";
                             echo "</a>";
                             echo "</li>";
@@ -67,8 +72,8 @@ include_once __DIR__ . '/../config/db.php';
     </div>
 </div>
 
-<footer class="text-center mt-5 pb-4">
-    <hr class="w-25 mx-auto mb-4 text-muted">
+<footer class="text-center mt-4 mt-md-5 pb-4 px-3">
+    <hr class="mx-auto mb-4 text-muted" style="max-width: 220px;">
     <p class="text-secondary small">
         Developed with <i class="fa-solid fa-heart text-danger"></i> by 
         <span class="fw-bold text-dark">Magali Medina</span> &copy; 2026
