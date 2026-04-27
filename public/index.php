@@ -7,13 +7,20 @@ include_once __DIR__ . '/../config/db.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mi Demo de Tareas | Magali Medina</title>
+    <script>
+        (function () {
+            var saved = localStorage.getItem('demo_theme');
+            document.documentElement.setAttribute('data-bs-theme', saved === 'light' ? 'light' : 'dark');
+        })();
+    </script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         /* Ajustes para que la web se vea mejor */
         .card { border-radius: 15px; border: none; }
         .list-group-item { border-left: none; border-right: none; transition: 0.3s; }
-        .list-group-item:hover { background-color: #f8f9fa; }
+        [data-bs-theme="light"] .list-group-item:hover { background-color: #f8f9fa; }
+        [data-bs-theme="dark"] .list-group-item:hover { background-color: rgba(255, 255, 255, 0.06); }
         
         /* Estilo para impresión / PDF */
         @media print {
@@ -26,16 +33,22 @@ include_once __DIR__ . '/../config/db.php';
         }
     </style>
 </head>
-<body class="bg-light">
+<body class="min-vh-100 bg-body">
 
 <div class="container py-4 py-md-5">
     <div class="row justify-content-center">
         <div class="col-12 col-sm-10 col-md-9 col-lg-7">
             <div class="card shadow-sm">
                 <div class="card-body p-4">
-                    <h2 class="text-center mb-4 fs-3 fw-bold text-primary">
-                        <i class="fa-solid fa-clipboard-check me-2"></i>Gestor de Tareas
-                    </h2>
+                    <div class="position-relative mb-4">
+                        <button type="button" id="themeToggle" class="btn btn-outline-secondary btn-sm position-absolute top-0 end-0 rounded-pill px-3" title="Cambiar tema claro / oscuro" aria-label="Cambiar tema">
+                            <i class="fa-solid fa-moon" id="themeIconMoon"></i>
+                            <i class="fa-solid fa-sun d-none" id="themeIconSun"></i>
+                        </button>
+                        <h2 class="text-center fs-3 fw-bold text-primary mb-0 pe-5">
+                            <i class="fa-solid fa-clipboard-check me-2"></i>Gestor de Tareas
+                        </h2>
+                    </div>
 
                     <?php
                     $total_tareas = $conexion->query("SELECT COUNT(*) FROM tareas")->fetchColumn();
@@ -46,19 +59,19 @@ include_once __DIR__ . '/../config/db.php';
 
                     <div class="row mb-3 text-center g-2">
                         <div class="col-4">
-                            <div class="p-2 border rounded bg-white">
+                            <div class="p-2 border rounded bg-body-secondary">
                                 <small class="text-muted d-block">Total</small>
                                 <span class="h5 fw-bold"><?php echo $total_tareas; ?></span>
                             </div>
                         </div>
                         <div class="col-4">
-                            <div class="p-2 border rounded bg-white">
+                            <div class="p-2 border rounded bg-body-secondary">
                                 <small class="text-muted d-block">Vencidas</small>
                                 <span class="h5 fw-bold text-danger"><?php echo $vencidas; ?></span>
                             </div>
                         </div>
                         <div class="col-4">
-                            <div class="p-2 border rounded bg-white">
+                            <div class="p-2 border rounded bg-body-secondary">
                                 <small class="text-muted d-block">Progreso</small>
                                 <span class="h5 fw-bold text-success"><?php echo $porcentaje; ?>%</span>
                             </div>
@@ -78,7 +91,7 @@ include_once __DIR__ . '/../config/db.php';
                         </button>
                     </div>
                     
-                    <form action="../src/Controllers/agregar.php" method="POST" class="mb-4 bg-light p-3 rounded border">
+                    <form action="../src/Controllers/agregar.php" method="POST" class="mb-4 bg-body-secondary p-3 rounded border">
                         <div class="row g-2">
                             <div class="col-md-12">
                                 <input type="text" name="titulo_tarea" class="form-control" placeholder="¿Qué hay que hacer?" required>
@@ -139,7 +152,7 @@ include_once __DIR__ . '/../config/db.php';
                                             <i class="fa-solid fa-check"></i>
                                         </a>
                                         <div>
-                                            <span class="badge bg-light text-dark border me-1 small"><?php echo $fila['categoria_nombre']; ?></span>
+                                            <span class="badge text-bg-secondary border me-1 small"><?php echo $fila['categoria_nombre']; ?></span>
                                             <span class="<?php echo $fila['completada'] ? 'text-decoration-line-through text-muted' : ''; ?>">
                                                 <?php echo htmlspecialchars($fila['tarea']); ?>
                                             </span>
@@ -180,6 +193,33 @@ include_once __DIR__ . '/../config/db.php';
         <a href="https://www.linkedin.com/in/magali-anabel-medina/" class="text-muted"><i class="fa-brands fa-linkedin fa-lg"></i></a>
     </div>
 </footer>
+
+<script>
+(function () {
+    var root = document.documentElement;
+    var KEY = 'demo_theme';
+    var btn = document.getElementById('themeToggle');
+    var iconMoon = document.getElementById('themeIconMoon');
+    var iconSun = document.getElementById('themeIconSun');
+    if (!btn || !iconMoon || !iconSun) return;
+
+    function syncIcons() {
+        var dark = root.getAttribute('data-bs-theme') === 'dark';
+        iconMoon.classList.toggle('d-none', !dark);
+        iconSun.classList.toggle('d-none', dark);
+        btn.setAttribute('title', dark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+    }
+
+    syncIcons();
+
+    btn.addEventListener('click', function () {
+        var next = root.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-bs-theme', next);
+        localStorage.setItem(KEY, next);
+        syncIcons();
+    });
+})();
+</script>
 
 </body>
 </html>
