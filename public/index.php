@@ -67,5 +67,17 @@ include_once __DIR__ . '/../config/db.php';
     </div>
 </div>
 
+<footer class="text-center mt-5 pb-4">
+    <hr class="w-25 mx-auto mb-4 text-muted">
+    <p class="text-secondary small">
+        Developed with <i class="fa-solid fa-heart text-danger"></i> by 
+        <span class="fw-bold text-dark">Magali Medina</span> &copy; 2026
+    </p>
+    <div class="d-flex justify-content-center gap-3">
+        <a href="https://github.com/magaliamedina" class="text-secondary"><i class="fa-brands fa-github fa-lg"></i></a>
+        <a href="https://www.linkedin.com/in/magali-anabel-medina/" class="text-secondary"><i class="fa-brands fa-linkedin fa-lg"></i></a>
+    </div>
+</footer>
+
 </body>
 </html>
