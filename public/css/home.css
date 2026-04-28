@@ -1,0 +1,43 @@
+.card {
+    border-radius: 15px;
+}
+
+.list-group-item {
+    border-left: none;
+    border-right: none;
+    transition: 0.3s;
+    background: transparent;
+}
+
+[data-bs-theme="light"] .list-group-item:hover {
+    background-color: #f8f9fa;
+}
+
+[data-bs-theme="dark"] .list-group-item:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.modal-content {
+    border-radius: 15px;
+}
+
+@media print {
+    .btn,
+    form,
+    .btn-group,
+    footer,
+    .progress,
+    .download-buttons,
+    #themeToggle {
+        display: none !important;
+    }
+
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+
+    body {
+        background-color: white !important;
+    }
+}
